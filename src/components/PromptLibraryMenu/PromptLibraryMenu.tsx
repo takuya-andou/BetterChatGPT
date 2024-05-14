@@ -15,7 +15,11 @@ const PromptLibraryMenu = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
     <div>
-      <button className='btn btn-neutral' onClick={() => setIsModalOpen(true)}>
+      <button
+        className='btn btn-neutral'
+        onClick={() => setIsModalOpen(true)}
+        aria-label={t('promptLibrary') as string}
+      >
         {t('promptLibrary')}
       </button>
       {isModalOpen && (
@@ -65,6 +69,10 @@ const PromptLibraryMenuPopUp = ({
     const updatedPrompts: Prompt[] = JSON.parse(JSON.stringify(_prompts));
     updatedPrompts.splice(index, 1);
     _setPrompts(updatedPrompts);
+  };
+
+  const clearPrompts = () => {
+    _setPrompts([]);
   };
 
   const handleOnFocus = (e: React.FocusEvent<HTMLTextAreaElement, Element>) => {
@@ -148,6 +156,14 @@ const PromptLibraryMenuPopUp = ({
         </div>
         <div className='flex justify-center cursor-pointer' onClick={addPrompt}>
           <PlusIcon />
+        </div>
+        <div className='flex justify-center mt-2'>
+          <div
+            className='btn btn-neutral cursor-pointer text-xs'
+            onClick={clearPrompts}
+          >
+            {t('clearPrompts')}
+          </div>
         </div>
         <div className='mt-6 px-2'>
           {t('morePrompts')}

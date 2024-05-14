@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import useStore from '@store/store';
 
 import DownChevronArrow from '@icon/DownChevronArrow';
 import { ChatInterface, Role, roles } from '@type/chat';
+
+import useHideOnOutsideClick from '@hooks/useHideOnOutsideClick';
 
 const RoleSelector = React.memo(
   ({
@@ -20,12 +22,13 @@ const RoleSelector = React.memo(
     const setChats = useStore((state) => state.setChats);
     const currentChatIndex = useStore((state) => state.currentChatIndex);
 
-    const [dropDown, setDropDown] = useState<boolean>(false);
+    const [dropDown, setDropDown, dropDownRef] = useHideOnOutsideClick();
 
     return (
       <div className='prose dark:prose-invert relative'>
         <button
           className='btn btn-neutral btn-small flex gap-1'
+          aria-label={t(role) as string}
           type='button'
           onClick={() => setDropDown((prev) => !prev)}
         >
@@ -33,6 +36,7 @@ const RoleSelector = React.memo(
           <DownChevronArrow />
         </button>
         <div
+          ref={dropDownRef}
           id='dropdown'
           className={`${
             dropDown ? '' : 'hidden'

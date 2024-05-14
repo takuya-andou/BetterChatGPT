@@ -61,7 +61,8 @@ Better ChatGPT comes with a bundle of amazing features! Here are some of them:
 
 - Proxy to bypass ChatGPT regional restrictions
 - Prompt library
-- Organize chats into folders
+- Organize chats into folders (with colours)
+- Filter chats and folders
 - Token count and pricing
 - ShareGPT integration
 - Custom model parameters (e.g. presence_penalty)
@@ -71,6 +72,8 @@ Better ChatGPT comes with a bundle of amazing features! Here are some of them:
 - Save chat automatically to local storage
 - Import / Export chat
 - Download chat (markdown / image / json)
+- Sync to Google Drive
+- Azure OpenAI endpoint support
 - Multiple language support (i18n)
 
 # 🛠️ Usage
@@ -132,13 +135,38 @@ One click deploy with Vercel
 
 1. Ensure that you have the following installed:
 
-   - [node.js](https://nodejs.org/en/)
-   - [yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
+   - [node.js](https://nodejs.org/en/) (v14.18.0 or above)
+   - [yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/) (6.14.15 or above)
 
 2. Clone this [repository](https://github.com/ztjhz/BetterChatGPT) by running `git clone https://github.com/ztjhz/BetterChatGPT.git`
 3. Navigate into the directory by running `cd BetterChatGPT`
 4. Run `yarn` or `npm install`, depending on whether you have yarn or npm installed.
 5. Launch the app by running `yarn dev` or `npm run dev`
+
+### Running it locally using docker compose
+1. Ensure that you have the following installed:
+
+   - [docker](https://www.docker.com/) (v24.0.7 or above)
+      ```bash
+      curl https://get.docker.com | sh \
+      && sudo usermod -aG docker $USER
+      ```
+
+2. Build the docker image
+   ```
+   docker compose build
+   ```
+
+3. Build and start the container using docker compose
+   ```
+   docker compose build
+   docker compose up -d
+   ```
+
+4. Stop the container
+   ```
+   docker compose down
+   ```
 
 # ⭐️ Star History
 
@@ -164,10 +192,11 @@ If you have enjoyed using our app, we kindly ask you to give this project a ⭐�
 
 If you would like to support the team, consider sponsoring us through one of the methods below. Every contribution, no matter how small, helps us to maintain and improve our service.
 
-| Payment Method | Link                                                                                     |
-| -------------- | ---------------------------------------------------------------------------------------- |
-| KoFi           | [![support](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/betterchatgpt) |
-| Alipay (Ayaka) | <img src="https://ayaka14732.github.io/sponsor/alipay.jpg" width=150 />                  |
-| Wechat (Ayaka) | <img src="https://ayaka14732.github.io/sponsor/wechat.png" width=150 />                  |
+| Payment Method | Link                                                                                                                                                 |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub         | [![GitHub Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/ztjhz) |
+| KoFi           | [![support](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/betterchatgpt)                                                             |
+| Alipay (Ayaka) | <img src="https://ayaka14732.github.io/sponsor/alipay.jpg" width=150 />                                                                              |
+| Wechat (Ayaka) | <img src="https://ayaka14732.github.io/sponsor/wechat.png" width=150 />                                                                              |
 
 Thank you for being a part of our community, and we look forward to serving you better in the future.

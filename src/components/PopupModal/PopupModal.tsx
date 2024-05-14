@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -10,6 +10,7 @@ const PopupModal = ({
   setIsModalOpen,
   handleConfirm,
   handleClose,
+  handleClickBackdrop,
   cancelButton = true,
   children,
 }: {
@@ -18,6 +19,7 @@ const PopupModal = ({
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleConfirm?: () => void;
   handleClose?: () => void;
+  handleClickBackdrop?: () => void;
   cancelButton?: boolean;
   children?: React.ReactElement;
 }) => {
@@ -28,6 +30,27 @@ const PopupModal = ({
     handleClose && handleClose();
     setIsModalOpen(false);
   };
+
+  const _handleBackdropClose = () => {
+    if (handleClickBackdrop) handleClickBackdrop();
+    else _handleClose();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      if (handleClickBackdrop) handleClickBackdrop();
+      else handleClose ? handleClose() : setIsModalOpen(false);
+    } else if (event.key === 'Enter') {
+      if (handleConfirm) handleConfirm();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleConfirm, handleClose, handleClickBackdrop]);
 
   if (modalRoot) {
     return ReactDOM.createPortal(
@@ -42,6 +65,7 @@ const PopupModal = ({
                 type='button'
                 className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
                 onClick={_handleClose}
+                aria-label='close modal'
               >
                 <CrossIcon2 />
               </button>
@@ -63,6 +87,7 @@ const PopupModal = ({
                   type='button'
                   className='btn btn-primary'
                   onClick={handleConfirm}
+                  aria-label='confirm'
                 >
                   {t('confirm')}
                 </button>
@@ -72,6 +97,7 @@ const PopupModal = ({
                   type='button'
                   className='btn btn-neutral'
                   onClick={_handleClose}
+                  aria-label='cancel'
                 >
                   {t('cancel')}
                 </button>
@@ -81,7 +107,7 @@ const PopupModal = ({
         </div>
         <div
           className='bg-gray-800/90 absolute top-0 left-0 h-full w-full z-[-1]'
-          onClick={_handleClose}
+          onClick={_handleBackdropClose}
         />
       </div>,
       modalRoot

@@ -44,6 +44,7 @@ const ConfigMenu = ({
       title={t('configuration') as string}
       setIsModalOpen={setIsModalOpen}
       handleConfirm={handleConfirm}
+      handleClickBackdrop={handleConfirm}
     >
       <div className='p-6 border-b border-gray-200 dark:border-gray-600'>
         <ModelSelector _model={_model} _setModel={_setModel} />
@@ -85,6 +86,7 @@ export const ModelSelector = ({
         className='btn btn-neutral btn-small flex gap-1'
         type='button'
         onClick={() => setDropDown((prev) => !prev)}
+        aria-label='model'
       >
         {_model}
         <DownChevronArrow />

@@ -20,6 +20,8 @@ import RefreshIcon from '@icon/RefreshIcon';
 
 import { folderColorOptions } from '@constants/color';
 
+import useHideOnOutsideClick from '@hooks/useHideOnOutsideClick';
+
 const ChatFolder = ({
   folderChats,
   folderId,
@@ -27,9 +29,9 @@ const ChatFolder = ({
   folderChats: ChatHistoryInterface[];
   folderId: string;
 }) => {
-  const folderName = useStore((state) => state.folders[folderId].name);
-  const isExpanded = useStore((state) => state.folders[folderId].expanded);
-  const color = useStore((state) => state.folders[folderId].color);
+  const folderName = useStore((state) => state.folders[folderId]?.name);
+  const isExpanded = useStore((state) => state.folders[folderId]?.expanded);
+  const color = useStore((state) => state.folders[folderId]?.color);
 
   const setChats = useStore((state) => state.setChats);
   const setFolders = useStore((state) => state.setFolders);
@@ -42,7 +44,8 @@ const ChatFolder = ({
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [showPalette, setShowPalette] = useState<boolean>(false);
+
+  const [showPalette, setShowPalette, paletteRef] = useHideOnOutsideClick();
 
   const editTitle = () => {
     const updatedFolders: FolderCollection = JSON.parse(
@@ -146,7 +149,9 @@ const ChatFolder = ({
 
   return (
     <div
-      className={`w-full transition-colors ${isHover ? 'bg-gray-800/40' : ''}`}
+      className={`w-full transition-colors group/folder ${
+        isHover ? 'bg-gray-800/40' : ''
+      }`}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -155,7 +160,7 @@ const ChatFolder = ({
         style={{ background: color || '' }}
         className={`${
           color ? '' : 'hover:bg-gray-850'
-        } transition-colors flex py-3 pl-3 pr-1 items-center gap-3 relative rounded-md break-all cursor-pointer parent-sibling`}
+        } transition-colors flex py-2 pl-2 pr-1 items-center gap-3 relative rounded-md break-all cursor-pointer parent-sibling`}
         onClick={toggleExpanded}
         ref={folderRef}
         onMouseEnter={() => {
@@ -206,21 +211,33 @@ const ChatFolder = ({
         >
           {isDelete || isEdit ? (
             <>
-              <button className='p-1 hover:text-white' onClick={handleTick}>
+              <button
+                className='p-1 hover:text-white'
+                onClick={handleTick}
+                aria-label='confirm'
+              >
                 <TickIcon />
               </button>
-              <button className='p-1 hover:text-white' onClick={handleCross}>
+              <button
+                className='p-1 hover:text-white'
+                onClick={handleCross}
+                aria-label='cancel'
+              >
                 <CrossIcon />
               </button>
             </>
           ) : (
             <>
-              <div className='relative'>
+              <div
+                className='relative md:hidden group-hover/folder:md:inline'
+                ref={paletteRef}
+              >
                 <button
                   className='p-1 hover:text-white'
                   onClick={() => {
                     setShowPalette((prev) => !prev);
                   }}
+                  aria-label='folder color'
                 >
                   <ColorPaletteIcon />
                 </button>
@@ -235,12 +252,14 @@ const ChatFolder = ({
                           onClick={() => {
                             updateColor(c);
                           }}
+                          aria-label={c}
                         />
                       ))}
                       <button
                         onClick={() => {
                           updateColor();
                         }}
+                        aria-label='default color'
                       >
                         <RefreshIcon />
                       </button>
@@ -250,18 +269,24 @@ const ChatFolder = ({
               </div>
 
               <button
-                className='p-1 hover:text-white'
+                className='p-1 hover:text-white md:hidden group-hover/folder:md:inline'
                 onClick={() => setIsEdit(true)}
+                aria-label='edit folder title'
               >
                 <EditIcon />
               </button>
               <button
-                className='p-1 hover:text-white'
+                className='p-1 hover:text-white md:hidden group-hover/folder:md:inline'
                 onClick={() => setIsDelete(true)}
+                aria-label='delete folder'
               >
                 <DeleteIcon />
               </button>
-              <button className='p-1 hover:text-white' onClick={toggleExpanded}>
+              <button
+                className='p-1 hover:text-white'
+                onClick={toggleExpanded}
+                aria-label='expand folder'
+              >
                 <DownChevronArrow
                   className={`${
                     isExpanded ? 'rotate-180' : ''
